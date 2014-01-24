@@ -12,18 +12,17 @@ import config
 class DocFetch:
     def __init__(self):
         self.conn = sqlite3.connect(config.GenerateDB())
-        logger.debug('open database')
+        logger.debug('open database at DocFetch')
 
     def __del__(self):
         self.conn.close()
-        logger.debug('close database')
+        logger.debug('close database at DocFetch')
 
     def fetch(self):
-        logger.info('start fetch document')
+        logger.info('start fetch documents')
         for feed in config.feeds:
             self.fetch_feed(feed)
-        logger.info('fetch task complete')
-
+        logger.info('documents fetch complete')
 
     def fetch_feed(self,feed):
         feed_name = feed['name']
@@ -83,7 +82,7 @@ class DocFetch:
             sql = 'delete from contents where entry_url = ?'
             cursor.execute(sql,(doc_url,))
 
-        sql = 'insert into contents(feed_name,entry_id,entry_title,entry_desc,entry_url,entry_time) values(?,?,?,?,?,?)'
+        sql = 'insert into contents(feed_name,entry_id,entry_title,entry_desc,entry_url,entry_time,state) values(?,?,?,?,?,?,0)'
         params = (feed_name,doc_id,doc_title,doc_content,doc_url,update_time)
         cursor.execute(sql,params)
         logger.info('save new article \'%s\' to database', doc_title)

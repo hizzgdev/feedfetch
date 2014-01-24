@@ -14,7 +14,8 @@ init_sqls = [
         entry_desc text,
         entry_url varchar(128) unique,
         entry_time datetime,
-        crtime datetime default (datetime('now','localtime'))
+        crtime datetime default (datetime('now','localtime')),
+        state integer
     )''',
     '''create index contents_feed_name_index on contents(feed_name)''',
     '''create index contents_entry_url_index on contents(entry_url)''',
@@ -24,7 +25,8 @@ init_sqls = [
         feed_name varchar(64),
         url nvarchar(512),
         filename nvarchar(64),
-        crtime datetime
+        crtime datetime default (datetime('now','localtime')),
+        state integer
     )''',
     '''create index images_url_index on images(url)'''
 ]
